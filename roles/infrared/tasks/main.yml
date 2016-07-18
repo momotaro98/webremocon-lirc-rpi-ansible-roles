@@ -1,0 +1,22 @@
+---
+- name: Install LIRC
+  apt: name=lirc state=present
+  register: result
+  ignore_errors: True
+
+- name: fix /boot/config.txt
+  linefile:
+    dest: /boot/config.txt
+    regexp: "^#?dtoverlay=lirc-rpi"
+    line: "dtoverlay=lirc-rpi, gpio_in_pin={{ item.in_pin }}, gpio_out_pin={{ item.out_pin }}"
+  with_items: gpio_pin
+
+- name: template /etc/lirc/hardware.conf
+  template: src=hardware.conf.j2 dest=/etc/lirc/hardware.conf
+  when: result|succeeded
+  notify: restart lirc
+
+- name: template /etc/lirc/lircd.conf
+  template: src=lircd.conf.j2 dest=/etc/lirc/lircd.conf
+  when: result|succeeded
+  notify: restart lirc

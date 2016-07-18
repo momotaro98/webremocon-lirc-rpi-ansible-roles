@@ -1,0 +1,4 @@
+---
+gpio_pin:
+  - in_pin: 24
+  - out_pin: 25

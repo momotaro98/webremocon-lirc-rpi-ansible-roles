@@ -1,0 +1,12 @@
+---
+# This playbook deploys the whole application stack in this site.
+
+- name: apply to RPi
+  hosts: pi
+  remote_user: root
+  become: True
+
+  roles:
+    - common
+    - infrared
+    - webremocon

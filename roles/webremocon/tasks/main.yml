@@ -1,0 +1,13 @@
+---
+- name: Install python-virtualenv
+  apt: name=python-virtualenv state=present
+
+- name: make virtual environment
+  command: /
+
+- name: git clone application
+  # アプリケーションをgit cloneする
+
+- name: create acstate.csv and reserve_state.csv
+  # アプリケーション用のCSVファイルを生成する
+  # template:
