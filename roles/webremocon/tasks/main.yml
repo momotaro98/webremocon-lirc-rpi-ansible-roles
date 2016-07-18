@@ -2,12 +2,40 @@
 - name: Install python-virtualenv
   apt: name=python-virtualenv state=present
 
-- name: make virtual environment
-  command: /
-
 - name: git clone application
   # アプリケーションをgit cloneする
 
-- name: create acstate.csv and reserve_state.csv
+- name: mkdir venv
+  # cloneしたディレクトリでvenvディレクトリを作成する
+  file:
+    path: {{ application_path }}/{{ repository }}/venv
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0755
+
+- name: make virtual environment
+  # cloneした場所でvirtualenvをつくる
+  command: /usr/bin/virtualenv -p `which python3` {{ application_path }}/{{ repovenv }}/venv
+
+- name: create acstate.csv
   # アプリケーション用のCSVファイルを生成する
-  # template:
+  template:
+    src: acstate.csv
+    dest: {{ application_path }}/{{ repository }}/acstate.csv
+
+- name: touch a acstate_log.csv
+  file:
+    path: {{ application_path }}/{{ repository }}/acstate_log.csv
+    state: touch
+    mode: 0755
+
+- name: create reserve_state.csv
+  template:
+    src: reserve_state.csv
+    dest: {{ application_path }}/{{ repository }}/reserve_state.csv
+
+- name: touch a reserve_state_log.csv
+  file:
+    src: reserve_state_log.csv
+    dest: {{ application_path }}/{{ repository }}/reserve_state_log.csv

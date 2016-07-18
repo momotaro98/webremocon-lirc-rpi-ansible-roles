@@ -1,1 +1,3 @@
 ---
+repository: raspberry_AC_controller
+application_path: /home/pi
