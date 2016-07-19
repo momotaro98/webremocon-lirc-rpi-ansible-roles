@@ -3,7 +3,7 @@
 
 - name: apply to RPi
   hosts: rpi
-  remote_user: vagrant
+  remote_user: pi
   become: True
 
   roles:

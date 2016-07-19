@@ -1,5 +1,5 @@
 ---
 
-owner: vagrant
-group: vagrant
-home_path: /home/vagrant
+owner: pi
+group: pi
+home_path: /home/pi

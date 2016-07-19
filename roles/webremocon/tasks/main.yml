@@ -60,5 +60,5 @@
 
 - name: pip install -r requirements.txt
   pip:
-    requirements: "{{ application_path}}/requirements.txt"
-    virtualenv: "{{ application_path}}/venv"
+    requirements: "{{ application_path }}/requirements.txt"
+    virtualenv: "{{ application_path }}/venv"
