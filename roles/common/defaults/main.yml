@@ -1,3 +1,2 @@
 ---
-rpi_config_options:
-  - area: "Asia/Tokyo"
+area: "Asia/Tokyo"

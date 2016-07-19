@@ -2,8 +2,8 @@
 # This playbook deploys the whole application stack in this site.
 
 - name: apply to RPi
-  hosts: pi
-  remote_user: root
+  hosts: rpi
+  remote_user: vagrant
   become: True
 
   roles:

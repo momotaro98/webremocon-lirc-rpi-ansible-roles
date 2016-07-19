@@ -3,7 +3,7 @@
   apt: update_cache=yes
 
 - name: Install common utilities
-  apt: name={{ itme }} state=present
+  apt: name={{ item }} state=present
   with_items:
    - vim
    - git
@@ -13,16 +13,13 @@
 
 - name: fix /etc/localtime
   copy:
-    src: /usr/share/zoneinfo/{{ item.area }}
+    src: /usr/share/zoneinfo/{{ area }}
     dest: /etc/localtime
-  with_items: rpi_config_options
 
-- name: fix /etc/timezone
-  linefile:
+- name: template /etc/timezone
+  template:
+    src: timezone.j2
     dest: /etc/timezone
-    regexp: "*"
-    line: "{{ item.area }}"
-  with_items: rpi_config_options
 
 
 # - name: wifi network config

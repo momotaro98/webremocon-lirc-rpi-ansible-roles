@@ -1,0 +1,4 @@
+*.swp
+*.retry
+.DS_Store
+.python-version

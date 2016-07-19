@@ -4,38 +4,61 @@
 
 - name: git clone application
   # アプリケーションをgit cloneする
+  git: repo={{ repository }} dest={{ application_path }}
+
+- name: set stat if venv exists
+  stat: path={{ application_path }}/venv
+  register: vstat
 
 - name: mkdir venv
   # cloneしたディレクトリでvenvディレクトリを作成する
   file:
-    path: {{ application_path }}/{{ repository }}/venv
+    path: "{{ application_path }}/venv"
     state: directory
-    owner: pi
-    group: pi
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: 0755
+  when: not vstat.stat.exists
 
 - name: make virtual environment
-  # cloneした場所でvirtualenvをつくる
-  command: /usr/bin/virtualenv -p `which python3` {{ application_path }}/{{ repovenv }}/venv
+  # virtualenvする
+  command: /usr/bin/virtualenv -p /usr/bin/python3 {{ application_path }}/venv
+  when: not vstat.stat.exists
 
 - name: create acstate.csv
   # アプリケーション用のCSVファイルを生成する
   template:
-    src: acstate.csv
-    dest: {{ application_path }}/{{ repository }}/acstate.csv
+    src: acstate.csv.j2
+    dest: "{{ application_path }}/acstate.csv"
+
+- name: set stat if acstate_log.csv exists
+  stat: path={{ application_path }}/acstate_log.csv
+  register: alstat
 
 - name: touch a acstate_log.csv
   file:
-    path: {{ application_path }}/{{ repository }}/acstate_log.csv
+    path: "{{ application_path }}/acstate_log.csv"
     state: touch
     mode: 0755
+  when: not alstat.stat.exists
 
 - name: create reserve_state.csv
   template:
-    src: reserve_state.csv
-    dest: {{ application_path }}/{{ repository }}/reserve_state.csv
+    src: reserve_state.csv.j2
+    dest: "{{ application_path }}/reserve_state.csv"
+
+- name: set stat if reserve_state_log.csv exists
+  stat: path={{ application_path }}/reserve_state_log.csv
+  register: rlstat
 
 - name: touch a reserve_state_log.csv
   file:
-    src: reserve_state_log.csv
-    dest: {{ application_path }}/{{ repository }}/reserve_state_log.csv
+    path: "{{ application_path }}/reserve_state_log.csv"
+    state: touch
+    mode: 0755
+  when: not rlstat.stat.exists
+
+- name: pip install -r requirements.txt
+  pip:
+    requirements: "{{ application_path}}/requirements.txt"
+    virtualenv: "{{ application_path}}/venv"

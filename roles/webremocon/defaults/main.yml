@@ -1,3 +1,7 @@
 ---
-repository: raspberry_AC_controller
-application_path: /home/pi
+
+app_name: raspberry_AC_controller
+
+repository: https://github.com/momotaro98/{{ app_name }}.git
+
+application_path: "{{ home_path }}/{{ app_name }}"
