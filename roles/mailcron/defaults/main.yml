@@ -1,0 +1,13 @@
+---
+
+gist_hash: 216c02e5ae014ecf7c670866030c9381
+
+repository: https://gist.github.com/{{ gist_hash }}.git
+
+application_path: "{{ home_path }}/{{ gist_hash }}"
+
+cron_shell_file: cron_shell.sh
+
+cron_python_file: cron_run.py
+
+log_file_path: /home/pi/raspberry_AC_controller/acstate_log.csv

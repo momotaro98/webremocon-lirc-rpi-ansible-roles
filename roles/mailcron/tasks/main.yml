@@ -1,0 +1,20 @@
+---
+
+# mail app components mail.py and cron_run.py
+- name: git clone mail application
+  git: repo={{ repository }} dest={{ application_path }}
+
+# create cron_shell.sh
+- name: create clone shell.sh
+  template:
+    src: cron_shell.sh.j2
+    dest: "{{ application_path }}/{{ cron_shell_file }}"
+    mode: 0755
+
+# set root cron file
+- name: set root cron file
+  cron:
+    name: "send email"
+    minute: "0"
+    hour: "4"
+    job: "{{ application_path }}/{{ cron_shell_file }}"

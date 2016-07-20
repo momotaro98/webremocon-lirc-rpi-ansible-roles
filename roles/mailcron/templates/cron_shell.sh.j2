@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# set environmental variables
+export MAILPASSWORD=mailpassword
+export HOMENAME=home000
+export APPFILEPATH={{ log_file_path }}
+
+# run python script
+/usr/bin/python {{ application_path }}/{{ cron_python_file }}
