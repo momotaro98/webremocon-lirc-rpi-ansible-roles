@@ -1,0 +1,7 @@
+---
+
+gist_hash: b1412f394e695017d86e924070597aaa
+
+repository: https://gist.github.com/{{ gist_hash }}.git
+
+application_path: "{{ home_path }}/{{ gist_hash }}"

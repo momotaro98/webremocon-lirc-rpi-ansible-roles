@@ -1,0 +1,51 @@
+---
+
+### I2C設定 ###
+
+# `/boot/config.txt`
+# の末尾に以下の内容を追記する
+- name: add line for I2C
+  lineinfile:
+    dest: /boot/config.txt
+    regexp: "^#?dtparam=i2c_arm=on"
+    line: "dtparam=i2c_arm=on"
+  notify: reboot
+
+# i2c-toolとpython-smbusをインストール
+- name: install i2c-tool and python-smbus
+  apt: name={{ item }} state=present
+  with_items:
+   - i2c-tools
+   - python-smbus
+
+############################################
+
+### アプリケーション設定 ###
+
+# virtualenvをインストール
+- name: Install python-virtualenv
+  apt: name=python-virtualenv state=present
+
+# アプリケーションを git clone する
+- name: get python program
+  git: repo={{ repository }} dest={{ application_path }} force=yes
+
+# venvの状態を取得
+- name: set stat if venv exists
+  stat: path={{ application_path }}/venv
+  register: vstat
+
+# cloneしたディレクトリでvenvディレクトリを作成する
+- name: mkdir venv
+  file:
+    path: "{{ application_path }}/venv"
+    state: directory
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: 0755
+  when: not vstat.stat.exists
+
+# virtualenvを`--system-site-packages`付きで生成
+- name: make virtual environment
+  command: /usr/bin/virtualenv --system-site-packages {{ application_path }}/venv
+  when: not vstat.stat.exists
