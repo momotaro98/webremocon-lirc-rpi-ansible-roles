@@ -4,7 +4,7 @@
 
 - name: git clone application
   # アプリケーションをgit cloneする
-  git: repo={{ repository }} dest={{ application_path }}
+  git: repo={{ repository }} dest={{ application_path }} force=yes
 
 - name: set stat if venv exists
   stat: path={{ application_path }}/venv

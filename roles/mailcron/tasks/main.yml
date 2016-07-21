@@ -2,7 +2,7 @@
 
 # mail app components mail.py and cron_run.py
 - name: git clone mail application
-  git: repo={{ repository }} dest={{ application_path }}
+  git: repo={{ repository }} dest={{ application_path }} force=yes
 
 # create cron_shell.sh
 - name: create clone shell.sh
