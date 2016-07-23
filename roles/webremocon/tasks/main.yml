@@ -25,6 +25,12 @@
   command: /usr/bin/virtualenv -p /usr/bin/python3 {{ application_path }}/venv
   when: not vstat.stat.exists
 
+- name: pip install -r requirements.txt
+  # pipで必要なライブラリを揃える
+  pip:
+    requirements: "{{ application_path }}/requirements.txt"
+    virtualenv: "{{ application_path }}/venv"
+
 - name: create acstate.csv
   # アプリケーション用のCSVファイルを生成する
   template:
@@ -58,7 +64,13 @@
     mode: 0755
   when: not rlstat.stat.exists
 
-- name: pip install -r requirements.txt
-  pip:
-    requirements: "{{ application_path }}/requirements.txt"
-    virtualenv: "{{ application_path }}/venv"
+- name: set stat if experiment_log.csv exists
+  stat: path={{ application_path }}/experiment_log.csv
+  register: elstat
+
+- name: touch a experiment_log.csv
+  file:
+    path: "{{ application_path }}/experiment_log.csv"
+    state: touch
+    mode: 0755
+  when: not elstat.stat.exists
