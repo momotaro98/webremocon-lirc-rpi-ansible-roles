@@ -5,3 +5,13 @@ gist_hash: b1412f394e695017d86e924070597aaa
 repository: https://gist.github.com/{{ gist_hash }}.git
 
 application_path: "{{ home_path }}/{{ gist_hash }}"
+
+env_cron_shell_file: env_cron_shell.sh
+
+env_cron_python_file: env_cron_run.py
+
+mail_cron_shell_file: mail_cron_shell.sh
+
+mail_cron_python_file: mail_cron_run.py
+
+log_file_path: "{{ application_path }}/env_log.csv"

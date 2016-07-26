@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export APPFILEPATH={{ log_file_path }}
+
+# run shell script
+{{ application_path }}/venv/bin/python {{ application_path }}/{{ env_cron_python_file }}

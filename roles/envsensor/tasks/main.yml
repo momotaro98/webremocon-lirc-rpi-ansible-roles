@@ -49,3 +49,36 @@
 - name: make virtual environment
   command: /usr/bin/virtualenv --system-site-packages {{ application_path }}/venv
   when: not vstat.stat.exists
+
+############################################
+
+### 自動取得設定
+
+# create env cron shell
+- name: crate cron shell
+  template:
+    src: env_cron_shell.sh.j2
+    dest: "{{ application_path }}/{{ env_cron_shell_file }}"
+    mode: 0755
+
+# create mail cron shell
+- name: crate cron shell
+  template:
+    src: mail_cron_shell.sh.j2
+    dest: "{{ application_path }}/{{ mail_cron_shell_file }}"
+    mode: 0755
+
+# set env cron file
+- name: set env cron file
+  cron:
+    name: "get env data"
+    minute: "0"
+    job: "{{ application_path }}/{{ env_cron_shell_file }}"
+
+# set mail cron file
+- name: set mail cron file
+  cron:
+    name: "mail env data"
+    minute: "0"
+    hour: "5"
+    job: "{{ application_path }}/{{ mail_cron_shell_file }}"
